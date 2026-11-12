@@ -12,7 +12,7 @@ import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 import java.io.IOException;
 
-@WebServlet(name = "WorkshopListServlet", urlPatterns = "")
+@WebServlet(name = "WorkshopListServlet", urlPatterns = "/servlet/workshops")
 public class WorkshopListServlet extends HttpServlet {
 
     private final WorkshopService workshopService;

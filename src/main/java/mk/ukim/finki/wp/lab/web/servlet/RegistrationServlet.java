@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-@WebServlet(name = "RegistrationServlet", urlPatterns = "/registration")
+@WebServlet(name = "RegistrationServlet", urlPatterns = "/servlet/registration")
 public class RegistrationServlet extends HttpServlet {
     private final RegistrationService registrationService ;
     private final SpringTemplateEngine Springengine;
@@ -68,7 +68,7 @@ public class RegistrationServlet extends HttpServlet {
                     StandardCharsets.UTF_8
             );
 
-            res.sendRedirect("/?errorMessage=" + message);
+            res.sendRedirect("/servlet/workshops?errorMessage=" + message);
         }
     }
 }

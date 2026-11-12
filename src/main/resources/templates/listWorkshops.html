@@ -27,6 +27,23 @@
         .error {
             color: red;
         }
+        .workshops-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .workshops-table th, .workshops-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .workshops-table th {
+            background-color: #f5f5f5;
+        }
+        form.inline {
+            display: inline;
+            margin: 0;
+        }
     </style>
 </head>
 <body>
@@ -35,9 +52,9 @@
 </header>
 <main>
     <!-- Display the errorMessage here (only if it exists), using the "error" class -->
-    <p class="error" th:if="${errorMessage != null}" th:text="'Eroor Message: ' + ${errorMessage}"></p>
+    <p class="error" th:if="${errorMessage != null}" th:text="'Error: ' + ${errorMessage}"></p>
 
-    <form action="/" method="GET">
+    <form action="/workshops" method="GET">
         <h2>Search workshops:</h2>
         <label>Title or category contains:</label>
         <input type="text" name="text">
@@ -45,6 +62,34 @@
         <input type="number" name="maxPrice" min="0" step="0.01">
         <input type="submit" value="Search">
     </form>
+
+    <!-- Workshops table with Edit / Delete buttons.
+         It is OUTSIDE the registration form, because HTML does not allow a form inside a form. -->
+    <h2>All workshops:</h2>
+    <p><a class="button" href="/workshops/workshop-form">+ Add new workshop</a></p>
+    <table class="workshops-table">
+        <tr>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Price (MKD)</th>
+            <th>Free seats</th>
+            <th>Instructor</th>
+            <th>Actions</th>
+        </tr>
+        <tr th:each="workshop : ${workshops}">
+            <td th:text="${workshop.title}"></td>
+            <td th:text="${workshop.category}"></td>
+            <td th:text="${workshop.price}"></td>
+            <td th:text="${workshop.capacity}"></td>
+            <td th:text="${workshop.instructor.name} + ' ' + ${workshop.instructor.surname}"></td>
+            <td>
+                <a class="button" th:href="@{/workshops/workshop-form/{id}(id=${workshop.id})}">Edit</a>
+                <form th:action="@{/workshops/delete/{id}(id=${workshop.id})}" method="POST" class="inline">
+                    <input type="submit" value="Delete">
+                </form>
+            </td>
+        </tr>
+    </table>
 
     <form action="/registration" method="POST">
         <h2>Choose a workshop:</h2>
@@ -62,7 +107,7 @@
                        th:disabled="${workshop.capacity == 0}"
                        required>
 
-                <span th:text="|Title: ${workshop.title}, Category: ${workshop.category}, Price: ${workshop.price} MKD, Free seats: ${workshop.capacity}|">
+                <span th:text="|Title: ${workshop.title}, Category: ${workshop.category}, Price: ${workshop.price} MKD, Free seats: ${workshop.capacity}, Instructor: ${workshop.instructor.name} ${workshop.instructor.surname}|">
             </span>
             </label>
         </div>

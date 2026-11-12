@@ -5,11 +5,23 @@ import lombok.Data;
 
 
 @Data
-@AllArgsConstructor
+
 public class Workshop {
     private String title;
     private String category;
     private double price;
     private int capacity;
+    private Long id;
+    private Instructor instructor;
+
+    public Workshop(String title,String category,double price,int capacity,Instructor instructor){
+        this.title=title;
+        this.capacity=capacity;
+        this.category=category;
+        this.price=price;
+        this.instructor=instructor;
+        this.id=(long) (Math.random()*1000);
+    }
+
 }
 
