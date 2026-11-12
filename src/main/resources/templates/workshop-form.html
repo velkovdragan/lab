@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Workshop Registration - Workshop Form</title>
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-top: 12px;
+        }
+        input, select {
+            width: 100%;
+            padding: 6px;
+            box-sizing: border-box;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <!-- If "workshop" exists in the model we are editing, otherwise adding -->
+    <h1 th:text="${workshop != null} ? 'Edit workshop' : 'Add new workshop'"></h1>
+</header>
+<main>
+    <!-- Edit  -> POST /workshops/edit/{id}
+         Add   -> POST /workshops/add -->
+    <form method="POST"
+          th:action="@{${workshop != null ? '/workshops/edit/' + workshop.id : '/workshops/add'}}">
+
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" th:value="${workshop?.title}" required>
+
+        <label for="category">Category</label>
+        <input type="text" id="category" name="category" th:value="${workshop?.category}" required>
+
+        <label for="price">Price (MKD)</label>
+        <input type="number" id="price" name="price" min="0" step="0.01"
+               th:value="${workshop?.price}" required>
+
+        <label for="capacity">Capacity (free seats)</label>
+        <input type="number" id="capacity" name="capacity" min="0"
+               th:value="${workshop?.capacity}" required>
+
+        <label for="instructorId">Instructor</label>
+        <select id="instructorId" name="instructorId" required>
+            <option th:each="instructor : ${instructors}"
+                    th:value="${instructor.id}"
+                    th:text="${instructor.name} + ' ' + ${instructor.surname}"
+                    th:selected="${workshop != null && workshop.instructor.id == instructor.id}">
+            </option>
+        </select>
+
+        <div class="buttons">
+            <input type="submit" value="Save">
+            <a href="/workshops">Cancel</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>
